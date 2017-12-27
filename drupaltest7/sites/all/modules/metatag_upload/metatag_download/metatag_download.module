@@ -1,0 +1,44 @@
+<?php
+
+/**
+ * @file
+ * Module file for metatag_download module. 
+ */
+
+/**
+ * Implements hook_init(). 
+ */
+function metatag_download_init() {
+  global $user;
+  if ($user->uid > 0 && in_array('administrator', $user->roles)) {  //If logged in user and administrator.
+   drupal_set_message(t('Meta Tag Download module is currently enabled, unless you are doing the meta download right now, there\'s no reason to leave it enabled.'), 'warning', FALSE);
+  }
+}
+
+/**
+ * Implements hook_menu().
+ */
+function metatag_download_menu() {
+  $items = array();
+  $items['admin/config/system/metatags-upload/metatags-download'] = array(
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('_metatag_download'),
+        'access arguments' => array('access metatag_download settings'),
+        'type' => MENU_LOCAL_TASK,
+        'title' => 'Download Meta Tags',
+        'file' => 'include/metatag_download.admin.inc',
+  );
+  return $items;
+}
+
+/**
+ * Implements hook_permission(). 
+ */
+function metatag_download_permission() {
+  return array(
+    'access metatag_download settings' => array(
+      'title' => t('Access Bulk Meta Tag Download Form'),
+      'description' => t('Bulk Download the meta tags in csv.'),
+    ),
+  );
+}

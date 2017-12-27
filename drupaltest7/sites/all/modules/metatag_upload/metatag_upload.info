@@ -1,0 +1,9 @@
+name = Meta Tags Upload
+description = "This module helps to upload metatags corresponding to various nodes using a csv File."
+package = SEO
+core = 7.x
+files[]=/include/metatag_upload.admin.inc
+dependencies[] = metatag
+dependencies[] = metatag_views
+dependencies[] = metatags_quick
+configure=admin/config/system/metatags-upload

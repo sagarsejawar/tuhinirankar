@@ -1,0 +1,49 @@
+<?php
+
+/**
+ * @file
+ * Module file for metatag_upload Module. 
+ */
+
+/**
+ * Implements hook_init(). 
+ */
+function metatag_upload_init() {
+  global $user;
+  if ($user->uid > 0 && in_array('administrator', $user->roles)) {  //If logged in user and administrator.
+    drupal_set_message(t('Meta Tag Upload module is currently enabled, unless you are doing the meta upload right now, there\'s no reason to leave it enabled.'), 'warning', FALSE);
+  }
+}
+
+/**
+ * Implements hook_menu().
+ * @return array 
+ */
+function metatag_upload_menu() {
+  $items = array();
+  $items['admin/config/system/metatags-upload/tab1'] = array(
+    'title' => 'Upload Meta Tags',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'weight' => -10,
+  );
+  $items['admin/config/system/metatags-upload'] = array(
+      'page callback' => 'drupal_get_form',
+      'page arguments' => array('_metatag_upload'),
+      'access arguments' => array('access metatag_upload settings'),
+      'title' => 'Upload Meta Tags',
+      'file' => 'include/metatag_upload.admin.inc',
+  );
+  return $items;
+}
+
+/**
+ * Implements hook_permission(). 
+ */
+function metatag_upload_permission() {
+  return array(
+    'access metatag_upload settings' => array(
+      'title' => t('Access Bulk Meta Tag Upload Form'),
+      'description' => t('Bulk upload the meta tags from csv.'),
+    ),
+  );
+}

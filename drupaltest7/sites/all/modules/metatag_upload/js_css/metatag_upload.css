@@ -1,0 +1,29 @@
+/* 
+    Document   : metatag_upload
+    Created on : Nov 7, 2013, 2:52:44 PM
+    Author     : rohit.joshi
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+#edit-meta-tag-types .form-item {
+  display: inline-block;
+  margin-right: 25px;
+  margin-bottom: 5px;
+  vertical-align: top;
+  width: 200px;
+}
+
+.meta-tag-csv-head-example {
+  float: left;
+  width: 380px;
+  margin-bottom: 10px;
+}
+.warning-message-metatag-upload {
+  height: 70px;
+  background-color: red;
+  font-weight: bold;
+  padding: 5px;
+  text-align: center;
+}
+

